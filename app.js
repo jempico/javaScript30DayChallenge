@@ -1,49 +1,36 @@
-const result_p = document.querySelector(".result");
-const keyA_div = document.querySelector(`.key[data-key="65"]`);
-const keyS_div = document.querySelector(`.key[data-key="83"]`);
-const keyD_div = document.querySelector(`.key[data-key="68"]`);
-const keyF_div = document.querySelector(`.key[data-key="70"]`);
-const keyG_div = document.querySelector(`.key[data-key="71"]`);
-const keyH_div = document.querySelector(`.key[data-key="72"]`);
-const keyJ_div = document.querySelector(`.key[data-key="74"]`);
-const keyK_div = document.querySelector(`.key[data-key="75"]`);
-const keyL_div = document.querySelector(`.key[data-key="76"]`);
+// 1. First select all the hands.
 
+const secondHand_div = document.querySelector('.second-hand');
+const minutesHand_div = document.querySelector('.min-hand');
+const hoursHand_div = document.querySelector('.hour-hand');
 
-function playfromKeyboard(){
-window.addEventListener('keydown', function(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    if(!audio) return;
-    audio.currentTime = 0;
-    audio.play();
-    key.classList.add('playing');
-    setTimeout(() => key.classList.remove('playing'), 500);
-  });
-}
-playfromKeyboard();
+ 
+// 1.1.Along with the set Interval method let's create a function that grabs the current date every second and then assigns the hours, minutes and seconds to the corresponding variables.
+  
+  setInterval(grabDate, 1000);  
+  function grabDate() {
+      var d = new Date();
+      var seconds = d.getSeconds();
+      var minutes = d.getMinutes();
+      var hours = d.getHours();
+      // 1.2. Let's turn each second, minute and hour into a degree:
+      var secondstoDegrees = ((seconds/60)*360)+90;
+      var minutestoDegrees = ((minutes/60)*360)+90;
+      var hourstoDegrees = ((hours/12)*360)+90;
 
-function playfromDOM(chosenKey, datakey) {
-    result_p.innerHTML = `You hit ${chosenKey}!!`
-    const audio = document.querySelector(`audio[data-key="${datakey}"]`);
-    const key = document.querySelector(`.key[data-key="${datakey}"]`);
-    audio.currentTime = 0;
-    audio.play();
-    key.classList.add('playing');
-    setTimeout(() => key.classList.remove('playing'), 500);
-}
+ 
 
-  function chooseKey() {
-keyA_div.addEventListener('click', () => playfromDOM('A', 65));
-keyS_div.addEventListener('click', () => playfromDOM('S', 83));
-keyD_div.addEventListener('click', () => playfromDOM('D', 68));
-keyF_div.addEventListener('click', () => playfromDOM('F', 70));
-keyG_div.addEventListener('click', () => playfromDOM('G', 71));
-keyH_div.addEventListener('click', () => playfromDOM('H', 72));
-keyJ_div.addEventListener('click', () => playfromDOM('J', 74));
-keyK_div.addEventListener('click', () => playfromDOM('K', 75));
-keyL_div.addEventListener('click', () => playfromDOM('L', 76));
+// 2.Create a function that moves each hand according to the corresponding rotation degrees.
+function moveHands(secDegrees,minDegrees,hourDegrees) {
+  secondHand_div.style.transform = `rotate(${secDegrees}deg)`;
+  minutesHand_div.style.transform = `rotate(${minDegrees}deg)`;
+  hoursHand_div.style.transform = `rotate(${hourDegrees}deg)`;
 
 }
 
-chooseKey();
+//3. Let's call the moveHands function, to rotate the three hands according to the corresponding degrees.
+      moveHands(secondstoDegrees, minutestoDegrees, hourstoDegrees);
+    }
+
+
+
